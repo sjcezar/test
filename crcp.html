@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: Arial, sans-serif; /* Set default font to Arial */
+            color: #262931; /* Set the color of all text */
+        }
+
+        .background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('hello.png');
+            background-size: cover; /* Adjust background size to cover */
+            background-position: center; /* Center the background image */
+            z-index: -1; /* Ensure the background is behind other content */
+        }
+
+        .container {
+            width: 80%;
+            margin: auto;
+            padding: 20px;
+            position: relative; /* Ensure relative positioning for child elements */
+            z-index: 1; /* Ensure the content is above the background */
+        }
+
+        .header {
+            text-align: left; /* Align header content to the left */
+            position: absolute; /* Position the header absolutely */
+            top: 20px; /* Adjust top spacing */
+            left: 20px; /* Adjust left spacing */
+        }
+
+        .header h1 {
+            margin: 0; /* Remove default margin for h1 */
+        }
+
+        .question {
+            margin-top: 50px;
+        }
+
+        .options {
+            margin-left: 20px;
+        }
+
+        .options label {
+            font-weight: bold; /* Make the labels bold */
+            font-size: 16px; /* Adjust the font size */
+        }
+
+        .buttons {
+            position: fixed; /* Position the buttons fixed to the viewport */
+            bottom: 20px; /* Adjust bottom spacing */
+            right: 20px; /* Adjust right spacing */
+            display: flex; /* Use flexbox for button alignment */
+            align-items: flex-end; /* Align items to the bottom of the flex container */
+            gap: 20px; /* Adjust the gap between buttons */
+        }
+
+        button {
+            color: transparent; /* Set text color to transparent */
+            background: none; /* Remove default background */
+            border: none; /* Remove default border */
+            cursor: pointer; /* Change cursor to pointer */
+            padding: 0; /* Remove padding */
+        }
+
+        #skipButton {
+            background-image: url('skip-button.png'); /* Replace 'skip-button.png' with your skip button image */
+            background-size: contain; /* Ensure the image fits inside the button */
+            background-repeat: no-repeat; /* Prevent image from repeating */
+            width: 200px; /* Adjust button width */
+            height: 100px; /* Adjust button height */
+        }
+
+        #nextButton {
+            background-image: url('next-button.png'); /* Replace 'next-button.png' with your next button image */
+            background-size: contain; /* Ensure the image fits inside the button */
+            background-repeat: no-repeat; /* Prevent image from repeating */
+            width: 200px; /* Adjust button width */
+            height: 100px; /* Adjust button height */
+        }
+    </style>
+</head>
+<body>
+    <div class="background"></div>
+    <div class="container">
+        <div class="header">
+        </div>
+        <div class="question">
+            <p>7. After a concert was over, Paul was always irritable and wretched until he got to sleep, and tonight he was even more than usually restless. He had the feeling of not being able to let down, of its being impossible to give up this delicious excitement which was the only thing that he could be called living at all. During the last number he withdrew and, after hastily changing his clothes in his dressing room, slipped out to the side door.</p>
+            <div class="options">
+                <input type="radio" id="option1" name="option" value="A">
+                <label for="option1">A) passionate</label><br>
+                <input type="radio" id="option2" name="option" value="B">
+                <label for="option2">B) obstinate</label><br>
+                <input type="radio" id="option3" name="option" value="C">
+                <label for="option3">C) misinformed</label><br>
+                <input type="radio" id="option4" name="option" value="D">
+                <label for="option4">D) communicative</label><br>
+            </div>
+        </div>
+    </div>
+    <div class="buttons">
+        <button id="skipButton"></button>
+        <button id="nextButton"></button>
+    </div>
+</body>
+</html>
