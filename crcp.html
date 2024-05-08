@@ -323,28 +323,29 @@
         }
 
         function displayQuestion(index) {
-            var question = questions[index];
-            passageElement.innerHTML = question.passage.replace(/_________/g, "<span class='underline'>_________</span>");
-            var questionText = question.question.replace(/_________/g, "<span class='underline'>_________</span>");
-            passageElement.innerHTML += "<br><br>" + questionText;
-            optionsElement.innerHTML = ""; // Clear previous options
-            question.options.forEach(function(option, i) {
-                var input = document.createElement("input");
-                input.type = "radio";
-                input.id = "option" + (i + 1);
-                input.name = "option";
-                input.value = String.fromCharCode(65 + i); // Convert index to character code
-                input.dataset.answer = option; // Store the answer in a custom attribute
-                var label = document.createElement("label");
-                label.htmlFor = "option" + (i + 1);
-                label.innerHTML = "<span class='circle'>" + String.fromCharCode(65 + i) + "</span><span class='rectangle'>" + option + "</span>";
-                label.addEventListener("click", function() {
-                    selectAnswer(option);
-                });
-                optionsElement.appendChild(input);
-                optionsElement.appendChild(label);
-            });
-        }
+    var question = questions[index];
+    passageElement.innerHTML = question.passage.replace(/_________/g, "<span class='underline'></span>");
+    var questionText = question.question.replace(/_________/g, "<span class='underline'></span>");
+    passageElement.innerHTML += "<br><br>" + questionText;
+    optionsElement.innerHTML = ""; // Clear previous options
+    question.options.forEach(function(option, i) {
+        var input = document.createElement("input");
+        input.type = "radio";
+        input.id = "option" + (i + 1);
+        input.name = "option";
+        input.value = String.fromCharCode(65 + i); // Convert index to character code
+        input.dataset.answer = option; // Store the answer in a custom attribute
+        var label = document.createElement("label");
+        label.htmlFor = "option" + (i + 1);
+        label.innerHTML = "<span class='circle'>" + String.fromCharCode(65 + i) + "</span><span class='rectangle'>" + option + "</span>";
+        label.addEventListener("click", function() {
+            selectAnswer(option);
+        });
+        optionsElement.appendChild(input);
+        optionsElement.appendChild(label);
+    });
+}
+
 
         function selectAnswer(option) {
             var selectedUnderlines = document.querySelectorAll(".underline.selected");
