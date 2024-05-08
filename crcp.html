@@ -2,11 +2,13 @@
 <html>
 <head>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@400&display=swap');
+
         body, html {
             margin: 0;
             padding: 0;
             height: 100%;
-            font-family: Arial, sans-serif; /* Set default font to Arial */
+            font-family: 'Quicksand', sans-serif; /* Set default font to Quicksand */
             color: #262931; /* Set the color of all text */
         }
 
@@ -52,6 +54,45 @@
         .options label {
             font-weight: bold; /* Make the labels bold */
             font-size: 16px; /* Adjust the font size */
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+
+        .circle {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background-color: #f2f2f1; /* Default circle color */
+            text-align: center;
+            line-height: 30px;
+            margin-right: 10px;
+        }
+
+        input[type="radio"]:checked + label .circle {
+            background-color: rgb(50, 201, 50); /* Change circle color when selected */
+        }
+
+        input[type="radio"] {
+            display: none; /* Hide the default radio button */
+        }
+
+        input[type="radio"] + label .rectangle {
+            display: inline-block;
+            border: 2px solid #f2f2f1; /* Default rectangle color */
+            padding: 5px 10px;
+            border-radius: 10px; /* More curved edges */
+            margin-right: 150px; /* Adjust the gap between answers */
+            cursor: pointer;
+        }
+
+        input[type="radio"]:checked + label .rectangle {
+            border-color: rgb(50, 201, 50); /* Change rectangle color when selected */
+            background-color: rgb(50, 201, 50);
+        }
+
+        .options .row {
+            margin-bottom: 20px;
         }
 
         .buttons {
@@ -75,16 +116,49 @@
             background-image: url('skip-button.png'); /* Replace 'skip-button.png' with your skip button image */
             background-size: contain; /* Ensure the image fits inside the button */
             background-repeat: no-repeat; /* Prevent image from repeating */
-            width: 200px; /* Adjust button width */
-            height: 100px; /* Adjust button height */
+            width: 140px; /* Adjust button width */
+            height: 90px; /* Adjust button height */
+            position: relative; /* Ensure relative positioning for child elements */
+        }
+
+        #skipsLeft {
+            font-family: 'Quicksand', sans-serif;
+            font-weight: bold;
+            position: absolute; /* Position the text absolutely */
+            bottom: -5px; /* Adjust bottom spacing */
+            left: 21%; /* Adjust left spacing */
+            transform: translateX(-50%); /* Center the text horizontally */
         }
 
         #nextButton {
             background-image: url('next-button.png'); /* Replace 'next-button.png' with your next button image */
             background-size: contain; /* Ensure the image fits inside the button */
             background-repeat: no-repeat; /* Prevent image from repeating */
-            width: 200px; /* Adjust button width */
-            height: 100px; /* Adjust button height */
+            width: 150px; /* Adjust button width */
+            height: 92px; /* Adjust button height */
+        }
+
+        .underline {
+    position: relative;
+    display: inline-block;
+    padding-bottom: 1px; /* Adjust padding for better appearance */
+    margin-bottom: -1px; /* Adjust margin for better appearance */
+}
+
+.underline.selected::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -2px;
+    width: 100%;
+    border-bottom: 2px solid black; /* Change to border-bottom */
+}
+
+
+        /* Styles to make the passage bold */
+        #passage {
+            font-weight: bold;
+            font-family: 'Quicksand', sans-serif; /* Ensure Quicksand font */
         }
     </style>
 </head>
@@ -94,22 +168,206 @@
         <div class="header">
         </div>
         <div class="question">
-            <p>7. After a concert was over, Paul was always irritable and wretched until he got to sleep, and tonight he was even more than usually restless. He had the feeling of not being able to let down, of its being impossible to give up this delicious excitement which was the only thing that he could be called living at all. During the last number he withdrew and, after hastily changing his clothes in his dressing room, slipped out to the side door.</p>
-            <div class="options">
-                <input type="radio" id="option1" name="option" value="A">
-                <label for="option1">A) passionate</label><br>
-                <input type="radio" id="option2" name="option" value="B">
-                <label for="option2">B) obstinate</label><br>
-                <input type="radio" id="option3" name="option" value="C">
-                <label for="option3">C) misinformed</label><br>
-                <input type="radio" id="option4" name="option" value="D">
-                <label for="option4">D) communicative</label><br>
+            <p id="passage"></p>
+            <div class="options" id="options">
             </div>
         </div>
     </div>
     <div class="buttons">
-        <button id="skipButton"></button>
-        <button id="nextButton"></button>
+        <button id="skipButton">Skip</button>
+        <div id="skipsLeft">3 skips left</div>
+        <button id="nextButton">Next</button>
     </div>
+
+    <script>
+        var questions = [
+            {
+                passage: "1. After a concert was over, Paul was always irritable and wretched until he got to sleep, and tonight he was even more than usually restless. He had the feeling of not being able to let down, of its being impossible to give up this delicious excitement which was the only thing that he could be called living at all. During the last number he withdrew and, after hastily changing his clothes in his dressing room, slipped out to the side door.",
+                question: "Paul was _________ about music.",
+                options: ["passionate", "obstinate", "misinformed", "communicative"],
+                answer: "A"
+            },
+
+            {
+                passage: "2. In the quiet town of Millbrook, there was a baker named Sam. Every morning, before the sun rose, Sam was already busy in his bakery, kneading dough and preheating the ovens. The townsfolk loved Sam’s bread, especially his signature sourdough loaves. Despite the long hours and hard work, Sam always had a smile on his face. He loved the smell of fresh bread in the morning and the satisfied faces of his customers.",
+                question: "Sam is _________ about his job.",
+                options: ["lazy", "diligent", "unhappy", "indifferent"],
+                answer: "B"
+            },
+            {
+                passage: "3. The enigmatic symphony ‘Whispers in the Void’ was composed by maestro Emilio Vásquez, known for his ability to evoke the ineffable through music. The composition’s dissonant chords and haunting melodies conjure images of cosmic expanses and the solitude of space. Critics hailed it as a groundbreaking fusion of classical motifs and avant-garde dissonance.",
+                question: "Maestro Vásquez’s symphony is _________.",
+                options: ["harmonious ", "conventional", "transcendental ", "monotonous"],
+                answer: "D"
+            },
+            {
+            passage: "4. In the labyrinthine depths of the ancient library, the tome lay ensconced amidst volumes of forgotten lore. Its pages, a palimpsest of history and myth, were inscribed with the sagacity of bygone eras. The air was redolent with the scent of vellum and the faintest hint of myrrh, a vestige of the arcane rituals once performed within these hallowed halls. Whispers of the past seemed to emanate from the very walls, as if the edifice itself yearned to impart the esoteric knowledge it had safeguarded through the annals of time.",
+            question: "The ancient library's atmosphere is _________.",
+            options: ["stale", "effervescent", "redolent", "insipid"],
+            answer: "C"
+            },
+            {
+        passage: "5. Dr. Hales was ensconced within the sterile sanctum of her laboratory, her existence a symphony of meticulous experimentation and molecular alchemy. Her magnum opus, a compound with the potential to arrest the relentless march of cellular senescence, stood on the precipice of medical history. Yet, the odyssey to this zenith was littered with the detritus of failed hypotheses and the ever-present specter of obscurity.",
+        question: "Dr. Hales' pursuit in her field can best be characterized as _________.",
+        options: ["trivial", "pedestrian", "pioneering", "unremarkable"],
+        answer: "C"
+    },
+    {
+        passage: "6. The zenith of Mount Vex, enshrouded by an impenetrable veil of alabaster mist, stood as an insurmountable bastion against the ambitions of mortals. The lore of the land spoke of a chimerical guardian, a being woven from the very essence of shadow and frost, whose cry was said to crystallize the spirit itself. Those intrepid souls who dared to seek the secrets cradled in the mountain's bosom vanished, leaving behind nothing but echoes of their valor in the annals of legend.",
+        question: "The lore surrounding Mount Vex is best described as _________.",
+        options: ["credible", "baseless", "intimidating", "inviting"],
+        answer: "C"
+    },
+    {
+        passage: "7. Beneath the argent luminescence of the celestial orb, the druids assembled within the primeval grove, a sanctuary untouched by the passage of aeons. Their incantations, a harmonious fusion with the latent energies that thrummed through the venerable flora, ascended towards the firmament. The rite they enacted was a sacrosanct communion, an invocation as ancient as the verdant cathedral that bore witness to their devotion.",
+        question: "The druids' ceremony is deeply _________.",
+        options: ["profane", "recent", "hallowed", "negligible"],
+        answer: "C"
+    },
+    {
+        passage: "8. The hallowed halls of justice served as the crucible for veracity, where the chaff of falsehood was winnowed from the grains of truth. The adjudicator, a paragon of equanimity, presided with a judicious gaze that pierced through the obfuscation. The narrative unfurling before her was a Gordian knot of duplicity and perfidy, a litmus test for the very principles upon which the edifice of jurisprudence was erected.",
+        question: "The adjudicator is expected to embody _________.",
+        options: ["partiality", "neutrality", "apathy", "carelessness"],
+        answer: "B"
+    },
+    {
+        passage: "9. The tapestry unfurled a visual saga of regal ascension and decline, its fibers interlaced with the meticulous care of a master weaver. Each hue and stitch was a silent testament to acts of heroism and the calamities of fate, a woven narrative of a civilization's undying legacy. It stood as a pictorial chronicle, a vibrant homage to the indomitable spirit that had weathered the tempests of time.",
+        question: "The tapestry serves as a _________ account.",
+        options: ["tedious", "pictorial", "fictitious", "monotonous"],
+        answer: "B"
+    },
+    {
+        passage: "10. The philosopher's discourses were an odyssey through the intricate labyrinths of thought, each premise and postulate a stepping stone deeper into the existential quagmire. His acolytes hung on every word, cognizant that each session was not merely a lecture but a pilgrimage to the core of human cognition and the mysteries it held.",
+        question: "The nature of the philosopher's discourses is _________.",
+        options: ["superficial", "circuitous", "enlightening", "scatterbrained"],
+        answer: "C"
+    },
+    {
+        passage: "11. The novel was a mosaic of interlacing tales, each narrative strand a filament in the grand tapestry of existence. The dramatis personae were bound by the inexorable loom of destiny, their lives intersecting in a confluence of serendipity and design. The author's prose pirouetted across the pages, a ballet of lexicon that orchestrated the symphony of the human condition.",
+        question: "The structure of the novel's narratives is _________.",
+        options: ["isolated", "braided", "hackneyed", "disconnected"],
+        answer: "B"
+    },
+    {
+        passage: "12. The canvas was a tempest of chromatic brilliance, a voyage through the artist's inner tumult as it clashed with the tranquility of the seascape. The brushwork was a maelstrom of passion and precision, a storm that breathed life into the maritime fury depicted within the frame.",
+        question: "The artist's technique is best described as _________.",
+        options: ["constrained", "predictable", "impetuous", "monochromatic"],
+        answer: "C"
+    },
+    {
+        passage: "13. The accord was the culmination of diplomatic prowess, a delicate tapestry woven from the threads of concession and authority. Forged in the crucible of conflict, it stood as a beacon of resilience and the promise of an era of concord. The signatories were cognizant that their signatures were not merely ink on parchment, but the heralds of a dawning epoch.",
+        question: "The accord is _________ in the realm of diplomacy.",
+        options: ["debacle", "supreme", "trivial", "blunder"],
+        answer: "B"
+    },
+    {
+        passage: "14. Amidst the cacophony of the bustling metropolis, the conservatory stood as an oasis of serenity. Within its verdant walls, botanists toiled, cultivating a myriad of exotic flora. The air was thick with the perfume of blooming orchids and the whisper of ancient ferns, a living library of botanical wonders that spoke of nature's boundless creativity.",
+        question: "The conservatory is a _________ within the city.",
+        options: ["discord", "mirage", "sanctuary", "void"],
+        answer: "C"
+    },
+    {
+        passage: "15. The grandmaster's strategy on the chessboard was an intricate tapestry of tactical foresight and strategic acumen. Each move was a silent war cry, a step in the dance of intellects. The pieces moved with a precision that belied the tumultuous battle of wits unfolding, a cerebral duel where the slightest misstep could spell defeat.",
+        question: "The grandmaster's gameplay is best described as _________.",
+        options: ["haphazard", "intuitive", "meticulous", "spontaneous"],
+        answer: "C"
+    },
+    {
+        passage: "16. The diplomat navigated the quagmire of international politics with a deft touch, her words a delicate ballet amidst the clashing ideologies. Her speeches were laced with nuance and gravitas, weaving a narrative that transcended borders and resonated with a universal call for harmony.",
+        question: "The diplomat's approach to politics is _________.",
+        options: ["clumsy", "altruistic", "adroit", "disjointed"],
+        answer: "C"
+    },
+    {
+        passage: "17. The ancient mariner's tales were a tapestry of seafaring lore and nautical exploits. His voice, weathered by salt and wind, carried the weight of oceans. The stories he spun were imbued with the magic of the high seas, a chronicle of adventures that skirted the line between reality and myth.",
+        question: "The mariner's tales are _________.",
+        options: ["mundane", "fabricated", "captivating", "straightforward"],
+        answer: "C"
+    },
+    {
+        passage: "18. The maestro's concerto was a sonorous odyssey, a journey through the landscapes of sound. Each note was a droplet in the river of melody that flowed from his baton. The orchestra responded as if a single entity, a tapestry of harmony woven from the threads of individual virtuosity.",
+        question: "The maestro's concerto is _________.",
+        options: ["discordant", "monotone", "euphonious", "inaudible"],
+        answer: "C"
+    },
+            // Add more questions as needed
+        ];
+
+        var currentQuestionIndex = 0;
+        var skipsLeft = 3;
+        var skipsLeftElement = document.getElementById("skipsLeft");
+        var passageElement = document.getElementById("passage");
+        var optionsElement = document.getElementById("options");
+
+        document.getElementById("skipButton").addEventListener("click", function() {
+            if (skipsLeft > 0) {
+                skipsLeft--;
+                updateSkipsLeftDisplay();
+                goToNextQuestion();
+            } else {
+                alert("No more skips left");
+            }
+        });
+
+        document.getElementById("nextButton").addEventListener("click", function() {
+            goToNextQuestion();
+        });
+
+        function goToNextQuestion() {
+            currentQuestionIndex++;
+            if (currentQuestionIndex < questions.length) {
+                displayQuestion(currentQuestionIndex);
+            } else {
+                alert("End of questions");
+            }
+        }
+
+        function displayQuestion(index) {
+            var question = questions[index];
+            passageElement.innerHTML = question.passage.replace(/_________/g, "<span class='underline'>_________</span>");
+            var questionText = question.question.replace(/_________/g, "<span class='underline'>_________</span>");
+            passageElement.innerHTML += "<br><br>" + questionText;
+            optionsElement.innerHTML = ""; // Clear previous options
+            question.options.forEach(function(option, i) {
+                var input = document.createElement("input");
+                input.type = "radio";
+                input.id = "option" + (i + 1);
+                input.name = "option";
+                input.value = String.fromCharCode(65 + i); // Convert index to character code
+                input.dataset.answer = option; // Store the answer in a custom attribute
+                var label = document.createElement("label");
+                label.htmlFor = "option" + (i + 1);
+                label.innerHTML = "<span class='circle'>" + String.fromCharCode(65 + i) + "</span><span class='rectangle'>" + option + "</span>";
+                label.addEventListener("click", function() {
+                    selectAnswer(option);
+                });
+                optionsElement.appendChild(input);
+                optionsElement.appendChild(label);
+            });
+        }
+
+        function selectAnswer(option) {
+            var selectedUnderlines = document.querySelectorAll(".underline.selected");
+            selectedUnderlines.forEach(function(underline) {
+                underline.textContent = option;
+                underline.classList.remove("selected");
+            });
+
+            var underlines = document.querySelectorAll(".underline:not(.selected)");
+            if (underlines.length > 0) {
+                var firstUnderline = underlines[0];
+                firstUnderline.textContent = option;
+                firstUnderline.classList.add("selected");
+            }
+        }
+
+        function updateSkipsLeftDisplay() {
+            skipsLeftElement.textContent = skipsLeft + " skips left";
+        }
+
+        // Display the first question initially
+        displayQuestion(currentQuestionIndex);
+        updateSkipsLeftDisplay();
+    </script>
 </body>
 </html>
